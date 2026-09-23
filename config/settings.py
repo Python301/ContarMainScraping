@@ -7,18 +7,13 @@ DB_CONFIG = {
 }
 
 
-
-
-import re
-from selenium.webdriver.common.by import By
-
-sku = None
-
 try:
-    scripts = driver.find_elements(By.TAG_NAME, "script")
+    sku = None
+
+    scripts = page.locator("script").all()
 
     for script in scripts:
-        text = script.get_attribute("innerHTML")
+        text = script.inner_text()
 
         if '"sku"' in text:
             match = re.search(r'"sku"\s*:\s*"([^"]+)"', text)
@@ -30,5 +25,5 @@ try:
     print("SKU:", sku)
 
 except Exception as e:
-    print("Error while scraping SKU:", e)
+    print("SKU not found:", e)
     sku = None
